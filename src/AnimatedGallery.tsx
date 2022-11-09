@@ -1,9 +1,9 @@
-import * as React from "react"
-import { FlatList, Image, Text, View, Dimensions, StyleSheet, TouchableOpacity } from "react-native"
-import { animatedGalleryProps } from "./AnimatedGallery.type"
-import ZoomView from "./ZoomView"
+import * as React from 'react';
+import { FlatList, Image, Text, View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { animatedGalleryProps } from './AnimatedGallery.type';
+import ZoomView from './ZoomView';
 
-const { width, height } = Dimensions.get("screen")
+const { width, height } = Dimensions.get('screen');
 
 export const AnimatedGallery = (props: animatedGalleryProps) => {
   /**
@@ -23,37 +23,37 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
     invertThumbDirection,
     invertGalleryDirection,
     activeIndex: _activeIndex = 0,
-  } = props
+  } = props;
 
   /**
    * Refs for handling the communication between two FlatList
    */
 
-  const topRef = React.useRef()
-  const thumbRef = React.useRef()
+  const topRef = React.useRef();
+  const thumbRef = React.useRef();
 
-  const [zoomLevel, setZoomLevel] = React.useState(1)
+  const [zoomLevel, setZoomLevel] = React.useState(1);
   /**
    * Local state to keep the images array recevied as props
    */
 
-  const [images, setImgaes] = React.useState<any>(null)
+  const [images, setImgaes] = React.useState<any>(null);
 
   /**
    * active index Keeps track of the selected index or active index
    */
 
-  const [activeIndex, setActiveIndex] = React.useState(_activeIndex)
+  const [activeIndex, setActiveIndex] = React.useState(_activeIndex);
 
   /**
    * If props are present then value from the props are applied else default value
    */
 
-  const IMAGE_SIZE = imageSize ? imageSize : 80
-  const SPACING = spacing ? spacing : 10
-  const thumb_BORDER_WIDTH = thumbBorderWidth ? thumbBorderWidth : 2
-  const thumb_BORDER_COLOR = thumbBorderColor ? thumbBorderColor : "#ffff"
-  const BACKGROUND_COLOR = backgroundColor ? backgroundColor : "#0000"
+  const IMAGE_SIZE = imageSize ? imageSize : 80;
+  const SPACING = spacing ? spacing : 10;
+  const thumb_BORDER_WIDTH = thumbBorderWidth ? thumbBorderWidth : 2;
+  const thumb_BORDER_COLOR = thumbBorderColor ? thumbBorderColor : '#ffff';
+  const BACKGROUND_COLOR = backgroundColor ? backgroundColor : '#0000';
 
   /**
    * when the compoent mounts the value from the imageUrl props is locally saved to images state
@@ -61,9 +61,9 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
 
   React.useEffect(() => {
     if (imageUrls.length !== 0) {
-      setImgaes(imageUrls)
+      setImgaes(imageUrls);
     }
-  }, [imageUrls])
+  }, [imageUrls]);
 
   /**
     Scroll to active index accepts index of the curent position as argument and onPress of the thumbNail
@@ -72,26 +72,26 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
   */
 
   const scrollToActiveIndex = (index: any, animated = true) => {
-    setActiveIndex(index)
+    setActiveIndex(index);
     //@ts-ignore
     topRef?.current?.scrollToOffset({
       offset: index * width,
       animated,
-    })
+    });
     if (index * (IMAGE_SIZE + SPACING) - IMAGE_SIZE / 2 > width / 2) {
       //@ts-ignore
       thumbRef?.current?.scrollToOffset({
         offset: index * (IMAGE_SIZE + SPACING) - width / 2 + IMAGE_SIZE / 2,
         animated,
-      })
+      });
     } else {
       //@ts-ignore
       thumbRef?.current?.scrollToOffset({
         offset: 0,
         animated,
-      })
+      });
     }
-  }
+  };
 
   /**
    * Renders the custom loader if present
@@ -99,13 +99,13 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
 
   if (!images) {
     if (renderLoader) {
-      return renderLoader
+      return renderLoader;
     } else {
       return (
-        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           <Text>Loading...</Text>
         </View>
-      )
+      );
     }
   }
 
@@ -127,11 +127,11 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
         inverted={invertGalleryDirection}
         scrollEnabled={zoomLevel === 1}
         onMomentumScrollEnd={(e) => {
-          scrollToActiveIndex(Math.floor(e.nativeEvent.contentOffset.x / width))
+          scrollToActiveIndex(Math.floor(e.nativeEvent.contentOffset.x / width));
         }}
         onContentSizeChange={() => {
           if (_activeIndex) {
-            scrollToActiveIndex(_activeIndex, false)
+            scrollToActiveIndex(_activeIndex, false);
           }
         }}
         renderItem={({ item }: { item: any }) => {
@@ -143,8 +143,8 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
                     ? {
                         width: width,
                         height: height,
-                        alignSelf: "center",
-                        justifyContent: "center",
+                        alignSelf: 'center',
+                        justifyContent: 'center',
                       }
                     : [StyleSheet.absoluteFillObject]
                 }
@@ -152,7 +152,7 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
                 <ZoomView imageWidth={width} imageUrl={item.url} onZoom={setZoomLevel} />
               </View>
             </View>
-          )
+          );
         }}
       />
 
@@ -167,7 +167,7 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
         onEndReached={onEndReached}
         inverted={invertThumbDirection}
         contentContainerStyle={{ paddingHorizontal: SPACING }}
-        style={{ position: "absolute", bottom: IMAGE_SIZE }}
+        style={{ position: 'absolute', bottom: IMAGE_SIZE }}
         renderItem={({ item, index }: { item: any; index: any }) => {
           return (
             <TouchableOpacity onPress={() => scrollToActiveIndex(index)}>
@@ -180,14 +180,14 @@ export const AnimatedGallery = (props: animatedGalleryProps) => {
                     borderRadius: 12,
                     marginRight: SPACING,
                     borderWidth: thumb_BORDER_WIDTH,
-                    borderColor: activeIndex === index ? thumb_BORDER_COLOR : "transparent",
+                    borderColor: activeIndex === index ? thumb_BORDER_COLOR : 'transparent',
                   },
                 ]}
               />
             </TouchableOpacity>
-          )
+          );
         }}
       />
     </View>
-  )
-}
+  );
+};
