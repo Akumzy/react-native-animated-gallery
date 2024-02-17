@@ -1,6 +1,6 @@
 {
   "name": "@akumzy/react-native-animated-gallery",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": " Tiny and fast animated image gallery for react-native",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/akumzy/react-native-animated-gallery#readme",
   "dependencies": {
-    "@openspacelabs/react-native-zoomable-view": "^2.1.1"
+    "@openspacelabs/react-native-zoomable-view": "^2.1.5"
   },
   "files": [
     "dist"
